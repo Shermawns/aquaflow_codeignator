@@ -1,7 +1,7 @@
    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" id="menu-principal">
        <div class="container">
-           <a class="navbar-brand d-flex align-items-center" href="main.php">
-               <img src="./Gemini_Generated_Image_3y2rqt3y2rqt3y2r.png" width="160" height="100" class="d-inline-block align-text-top me-2">
+           <a class="navbar-brand d-flex align-items-center" href="<?= base_url('login/autenticado') ?>">
+               <img src="<?= base_url('assets/imgs/Gemini_Generated_Image_3y2rqt3y2rqt3y2r.png') ?>" width="160" height="100" class="d-inline-block align-text-top me-2">
            </a>
            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#conteudoNavbar" aria-controls="conteudoNavbar" aria-expanded="false" aria-label="Toggle navigation">
                <span class="navbar-toggler-icon"></span>
@@ -9,7 +9,7 @@
            <div class="collapse navbar-collapse" id="conteudoNavbar">
                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                    <li class="nav-item">
-                       <a class="nav-link" href="usuario.php">Usuários</a>
+                       <a class="nav-link" href="<?= base_url('usuarios') ?>">Usuários</a>
                    </li>
                    <li class="nav-item">
                        <a class="nav-link" href="funcionario.php">Funcionários</a>

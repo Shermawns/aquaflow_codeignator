@@ -5,7 +5,7 @@ class Login extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('loginCadastro_model');
+        $this->load->model('usuarios_model');
     }
 
     public function index()
@@ -26,7 +26,7 @@ class Login extends CI_Controller {
             return;
         }
 
-        $usuario_db = $this->loginCadastro_model->get_usuarios($user);
+        $usuario_db = $this->usuarios_model->get_usuarios($user);
 
         if($usuario_db) {
             if($senha == $usuario_db->senha) { 
@@ -42,7 +42,7 @@ class Login extends CI_Controller {
                     'tipo' => 'sucesso'
                 ]);
                 
-                echo "Login OK!";
+                redirect('login/autenticado');
 
             } else {
                 $this->session->set_flashdata('toast', [
@@ -59,4 +59,10 @@ class Login extends CI_Controller {
             redirect('login');
         }
     }
+
+    public function autenticado(){
+        $this->load->view('./layouts/header_view');
+        $this->load->view('dashboard_view');
+    }
 }
+
