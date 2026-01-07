@@ -3,6 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
 
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('loginCadastro_model');
+    }
+
     public function index()
     {
         $this->load->view('loginCadastro_view');
@@ -21,7 +26,7 @@ class Login extends CI_Controller {
             return;
         }
 
-        $usuario_db = $this->LoginCadastro_model->get_usuarios($user);
+        $usuario_db = $this->loginCadastro_model->get_usuarios($user);
 
         if($usuario_db) {
             if($senha == $usuario_db->senha) { 
@@ -37,7 +42,7 @@ class Login extends CI_Controller {
                     'tipo' => 'sucesso'
                 ]);
                 
-                echo "Login OK! (Redireciona para o painel aqui)";
+                echo "Login OK!";
 
             } else {
                 $this->session->set_flashdata('toast', [
