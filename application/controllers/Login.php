@@ -19,7 +19,7 @@ class Login extends CI_Controller {
     
         if(empty($user) || empty($senha)){
             $this->session->set_flashdata('toast', [
-                'msg' => 'Erro: Preencha todos os campos obrigatórios!',
+                'mensagem' => 'Erro: Preencha todos os campos obrigatórios!',
                 'tipo' => 'erro'
             ]);
             redirect('login');
@@ -29,7 +29,7 @@ class Login extends CI_Controller {
         $usuario_db = $this->usuarios_model->get_usuarios($user);
 
         if($usuario_db) {
-            if($senha == $usuario_db->senha) { 
+            if(password_verify($senha, $usuario_db->senha)) { 
                 
                 $sessao_dados = [
                     'usuario' => $usuario_db->usuario,
@@ -38,7 +38,7 @@ class Login extends CI_Controller {
                 $this->session->set_userdata($sessao_dados);
 
                 $this->session->set_flashdata('toast', [
-                    'msg' => 'Login efetuado com sucesso!',
+                    'mensagem' => 'Login efetuado com sucesso!',
                     'tipo' => 'sucesso'
                 ]);
                 
@@ -46,14 +46,14 @@ class Login extends CI_Controller {
 
             } else {
                 $this->session->set_flashdata('toast', [
-                    'msg' => 'Erro: Senha incorreta!',
+                    'mensagem' => 'Erro: Senha incorreta!',
                     'tipo' => 'erro'
                 ]);
                 redirect('login');
             }
         } else {
             $this->session->set_flashdata('toast', [
-                'msg' => 'Erro: Utilizador não encontrado!',
+                'mensagem' => 'Erro: Usuário não encontrado!',
                 'tipo' => 'erro'
             ]);
             redirect('login');
@@ -63,6 +63,11 @@ class Login extends CI_Controller {
     public function autenticado(){
         $this->load->view('./layouts/header_view');
         $this->load->view('dashboard_view');
+    }
+
+    public function logout(){
+        $this->session->unset_userdata('logado');
+        redirect('login');
     }
 }
 

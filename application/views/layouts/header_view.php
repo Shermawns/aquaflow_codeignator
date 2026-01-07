@@ -12,7 +12,7 @@
                        <a class="nav-link" href="<?= base_url('usuarios') ?>">Usuários</a>
                    </li>
                    <li class="nav-item">
-                       <a class="nav-link" href="funcionario.php">Funcionários</a>
+                       <a class="nav-link" href="<?= base_url('funcionarios') ?>">Funcionários</a>
                    </li>
                    <li class="nav-item">
                        <a class="nav-link" href="produtos.php">Produtos</a>
@@ -25,7 +25,7 @@
                    </li>
                </ul>
                <div class="d-flex">
-                   <a href="../login/logout.php" class="btn btn-outline-danger shadow-sm pt-2 pb-2 ps-3 pe-3 fw-bold rounded-pill">Sair <i class="fa-solid fa-right-from-bracket ms-2"></i></a>
+                   <a href="<?= base_url('login/logout') ?>" class="btn btn-outline-danger shadow-sm pt-2 pb-2 ps-3 pe-3 fw-bold rounded-pill">Sair <i class="fa-solid fa-right-from-bracket ms-2"></i></a>
                </div>
            </div>
        </div>

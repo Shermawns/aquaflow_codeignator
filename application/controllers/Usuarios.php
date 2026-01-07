@@ -5,6 +5,9 @@ class Usuarios extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('usuarios_model');
+        if ($this->session->userdata('logado') !== TRUE) {
+            redirect('login');
+        }
     }
     
     public function index(){

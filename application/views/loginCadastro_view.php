@@ -49,7 +49,7 @@
     $toast = $this->session->flashdata('toast'); 
     ?>
 
-    var mensagem = "<?= $toast['msg'] ?? '' ?>";
+    var mensagem = "<?= $toast['mensagem'] ?? '' ?>";
     var tipo = "<?= $toast['tipo'] ?? '' ?>";
 
     if (mensagem) {
