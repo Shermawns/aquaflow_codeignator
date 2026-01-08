@@ -21,6 +21,19 @@ class Funcionarios_model extends CI_Model
         return $query->row();
     }
 
+    public function get_metas_by_funcionario($id)
+    {
+        $this->db->where('funcionario_meta', $id);
+        $this->db->order_by('mes_meta', 'DESC');
+        $query = $this->db->get('tabela_metas');
+        return $query->result();
+    }
+
+    public function get_vendas_by_funcionario($id)
+    {
+        return [];
+    }
+
     public function update_func($id, $dados)
     {
         $this->db->where('id', $id);

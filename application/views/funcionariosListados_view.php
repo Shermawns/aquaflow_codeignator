@@ -330,7 +330,7 @@
         const formData = new FormData();
         formData.append('id', id);
 
-        fetch('../pages/get_employee_details.php', {
+        fetch('<?= base_url("funcionarios/get_details") ?>', {
                 method: 'POST',
                 body: formData
             })

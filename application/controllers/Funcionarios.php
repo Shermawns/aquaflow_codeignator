@@ -158,4 +158,25 @@ class Funcionarios extends CI_Controller
         }
         redirect('funcionarios');
     }
+
+    public function get_details()
+    {
+        $id = $this->input->post('id');
+
+        $metas = $this->funcionarios_model->get_metas_by_funcionario($id);
+        $vendas = $this->funcionarios_model->get_vendas_by_funcionario($id);
+
+        $total_vendas = 0;
+        foreach ($vendas as $venda) {
+            $total_vendas += $venda->valor_venda;
+        }
+
+        $response = [
+            'metas' => $metas,
+            'vendas' => $vendas,
+            'total_geral' => $total_vendas
+        ];
+
+        echo json_encode($response);
+    }
 }

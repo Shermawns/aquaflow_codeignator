@@ -18,7 +18,7 @@
                        <a class="nav-link" href="<?= base_url('produtos') ?>">Produtos</a>
                    </li>
                    <li class="nav-item">
-                       <a class="nav-link" href="metas.php">Metas</a>
+                       <a class="nav-link" href="<?= base_url('metas') ?>">Metas</a>
                    </li>
                    <li class="nav-item">
                        <a class="nav-link" href="vendas.php">Vendas</a>
