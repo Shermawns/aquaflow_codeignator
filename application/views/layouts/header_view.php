@@ -21,7 +21,7 @@
                        <a class="nav-link" href="<?= base_url('metas') ?>">Metas</a>
                    </li>
                    <li class="nav-item">
-                       <a class="nav-link" href="vendas.php">Vendas</a>
+                       <a class="nav-link" href="<?= base_url('vendas') ?>">Vendas</a>
                    </li>
                </ul>
                <div class="d-flex">

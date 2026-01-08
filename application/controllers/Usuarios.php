@@ -66,13 +66,27 @@ class Usuarios extends CI_Controller {
 }
 
     public function excluir($id){
+        $id_logado = $this->session->userdata('id');
+
+        if($id == $id_logado){
+            $this->usuarios_model->delete_user($id);
+            redirect('login');
+            return;
+        }
+
         if($this->usuarios_model->delete_user($id)){
             $this->session->set_flashdata('toast', [
                 'mensagem' => 'Usuário deletado com sucesso!',
                 'tipo' => 'sucesso'
             ]);
-            redirect('usuarios');
+        } else {
+            $this->session->set_flashdata('toast', [
+                'mensagem' => 'Erro ao tentar excluir o usuário.',
+                'tipo' => 'erro'
+            ]);
         }
+
+        redirect('usuarios');
     }
 
 

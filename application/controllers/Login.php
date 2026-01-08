@@ -1,9 +1,11 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class Login extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('usuarios_model');
     }
@@ -13,11 +15,12 @@ class Login extends CI_Controller {
         $this->load->view('loginCadastro_view');
     }
 
-    public function autenticar(){
+    public function autenticar()
+    {
         $user = $this->input->post('usuario');
         $senha = $this->input->post('senha');
-    
-        if(empty($user) || empty($senha)){
+
+        if (empty($user) || empty($senha)) {
             $this->session->set_flashdata('toast', [
                 'mensagem' => 'Erro: Preencha todos os campos obrigatórios!',
                 'tipo' => 'erro'
@@ -28,10 +31,11 @@ class Login extends CI_Controller {
 
         $usuario_db = $this->usuarios_model->get_usuarios($user);
 
-        if($usuario_db) {
-            if(password_verify($senha, $usuario_db->senha)) { 
-                
+        if ($usuario_db) {
+            if (password_verify($senha, $usuario_db->senha)) {
+
                 $sessao_dados = [
+                    'id' => $usuario_db->id,
                     'usuario' => $usuario_db->usuario,
                     'logado' => TRUE
                 ];
@@ -41,9 +45,8 @@ class Login extends CI_Controller {
                     'mensagem' => 'Login efetuado com sucesso!',
                     'tipo' => 'sucesso'
                 ]);
-                
-                redirect('login/autenticado');
 
+                redirect('login/autenticado');
             } else {
                 $this->session->set_flashdata('toast', [
                     'mensagem' => 'Erro: Senha incorreta!',
@@ -60,14 +63,15 @@ class Login extends CI_Controller {
         }
     }
 
-    public function autenticado(){
+    public function autenticado()
+    {
         $this->load->view('./layouts/header_view');
         $this->load->view('dashboard_view');
     }
 
-    public function logout(){
+    public function logout()
+    {
         $this->session->unset_userdata('logado');
         redirect('login');
     }
 }
-

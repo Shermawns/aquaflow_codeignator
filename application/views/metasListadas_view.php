@@ -18,8 +18,8 @@
                 <h2 class="fw-bold mb-1" style="color: #0d6efd;">Metas</h2>
                 <p class="text-muted mb-0">Gerenciamento de metas</p>
             </div>
-            <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCadastrar_meta" <?= empty($lista_funcionarios) ? 'disabled' : '' ?>>
-                <i class="fa-solid fa-plus me-2"></i>Definir meta
+            <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal"  data-bs-target="#modalCadastrar_meta" <?= empty($lista_funcionarios) ? 'disabled              style="cursor: not-allowed; pointer-events: auto;"' : '' ?>>
+                <i class="fa-solid fa-plus me-2"></i>Registrar Meta
             </button>
         </div>
 

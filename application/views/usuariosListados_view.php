@@ -95,7 +95,7 @@
                             <input type="hidden" name="id_edit" id="id_edit">
 
                             <div class="mb-3 text-start">
-                                <label class="form-label text-muted small fw-bold">USUÁRIO</label>
+                                <label class="form-label text-muted small fw-bold">USUÁRIO <span class="text-danger"> *</span></label>
                                 <input type="text" class="form-control bg-light" id="usuario_edit" name="usuario_edit" maxlength="50" required>
                             </div>
 
@@ -131,11 +131,8 @@
                     <div class="modal-body py-4 px-4">
                         <form action="<?= base_url('usuarios/cadastrar') ?>" method="post">
                             <div class="mb-3 text-start">
-                                <label for="user" class="form-label text-muted small fw-bold">USUÁRIO</label>
+                                <label for="user" class="form-label text-muted small fw-bold">USUÁRIO <span class="text-danger"> *</span></label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-primary">
-                                        <i class="fa-solid fa-user"></i>
-                                    </span>
                                     <input type="text" class="form-control bg-light border-start-0 ps-0" id="user" name="usuario" autocomplete="username" required placeholder="Digite o login">
                                 </div>
                             </div>
@@ -143,22 +140,16 @@
 
                             <!-- Campo de senha  -->
                             <div class="mb-3 text-start">
-                                <label for="pass" class="form-label text-muted small fw-bold">SENHA</label>
+                                <label for="pass" class="form-label text-muted small fw-bold">SENHA <span class="text-danger"> *</span></label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-primary">
-                                        <i class="fa-solid fa-lock"></i>
-                                    </span>
                                     <input type="password" class="form-control bg-light border-start-0 ps-0" id="pass" name="senha" autocomplete="new-password" required placeholder="Crie uma senha forte">
                                 </div>
                             </div>
 
                             <!-- Campo de confirmar senha -->
                             <div class="mb-4 text-start">
-                                <label for="confirm" class="form-label text-muted small fw-bold">CONFIRMAR SENHA</label>
+                                <label for="confirm" class="form-label text-muted small fw-bold">CONFIRMAR SENHA <span class="text-danger"> *</span></label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-primary">
-                                        <i class="fa-solid fa-check-double"></i>
-                                    </span>
                                     <input type="password" class="form-control bg-light border-start-0 ps-0" id="confirm" name="confirmar" autocomplete="new-password" required placeholder="Repita a senha">
                                 </div>
                             </div>
