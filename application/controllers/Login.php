@@ -46,7 +46,7 @@ class Login extends CI_Controller
                     'tipo' => 'sucesso'
                 ]);
 
-                redirect('login/autenticado');
+                redirect('dashboard');
             } else {
                 $this->session->set_flashdata('toast', [
                     'mensagem' => 'Erro: Senha incorreta!',
@@ -65,8 +65,7 @@ class Login extends CI_Controller
 
     public function autenticado()
     {
-        $this->load->view('./layouts/header_view');
-        $this->load->view('dashboard_view');
+        redirect('dashboard');
     }
 
     public function logout()
