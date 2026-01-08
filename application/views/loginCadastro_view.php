@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="<?= base_url('assets/style.css') ?>">  
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 </head>
 
 <body>
@@ -16,7 +16,7 @@
         <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 400px; width: 100%;">
             <div class="card-body">
                 <div class="text-center mb-4">
-                    <img src="<?= base_url('assets/imgs/Gemini_Generated_Image_3y2rqt3y2rqt3y2r.png') ?>"  alt="Logo AquaFlow" class="img-fluid mb-2" style="max-width: 300px;">
+                    <img src="<?= base_url('assets/imgs/Gemini_Generated_Image_3y2rqt3y2rqt3y2r.png') ?>" alt="Logo AquaFlow" class="img-fluid mb-2" style="max-width: 300px;">
                     <h2 class="h5 text-primary">Acesse sua conta</h2>
                 </div>
 
@@ -45,8 +45,8 @@
 </html>
 
 <script>
-    <?php 
-    $toast = $this->session->flashdata('toast'); 
+    <?php
+    $toast = $this->session->flashdata('toast');
     ?>
 
     var mensagem = "<?= $toast['mensagem'] ?? '' ?>";

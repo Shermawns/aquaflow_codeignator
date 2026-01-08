@@ -5,11 +5,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 </head>
 
 <body>
-        <div class="container py-5">
+    <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
             <div>
                 <h2 class="fw-bold mb-1" style="color: #0d6efd;">Funcionários</h2>
@@ -48,10 +48,10 @@
                                         </td>
 
                                         <td class="pe-4 text-end">
-                                            <button type="button" 
-                                                class="btn btn-sm btn-outline-info rounded-pill me-1" 
-                                                title="Visualizar" 
-                                                data-bs-toggle="modal" 
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-info rounded-pill me-1"
+                                                title="Visualizar"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#modalVisualizar"
                                                 data-id="<?= $func->id ?>"
                                                 data-nome="<?= htmlspecialchars($func->nome) ?>"
@@ -61,10 +61,10 @@
                                                 Visualizar
                                             </button>
 
-                                            <button type="button" 
-                                                class="btn btn-sm btn-outline-primary rounded-pill me-1" 
-                                                title="Editar" 
-                                                data-bs-toggle="modal" 
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-primary rounded-pill me-1"
+                                                title="Editar"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#modalEditar_func"
                                                 data-id="<?= $func->id ?>"
                                                 data-nome="<?= htmlspecialchars($func->nome) ?>"
@@ -73,10 +73,10 @@
                                             </button>
 
                                             <?php if ($func->data_demissao == null) : ?>
-                                                <button type="button" 
-                                                    class="btn btn-sm btn-outline-danger rounded-pill me-1" 
-                                                    title="Desligar" 
-                                                    data-bs-toggle="modal" 
+                                                <button type="button"
+                                                    class="btn btn-sm btn-outline-danger rounded-pill me-1"
+                                                    title="Desligar"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#modalDesligar_func"
                                                     data-id="<?= $func->id ?>"
                                                     data-nome="<?= htmlspecialchars($func->nome) ?>"
@@ -84,9 +84,9 @@
                                                     Desligar
                                                 </button>
                                             <?php else : ?>
-                                                <button type="button" 
+                                                <button type="button"
                                                     class="btn btn-sm btn-success rounded-pill me-1"
-                                                    title="Ativar" 
+                                                    title="Ativar"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modalReativar_func"
                                                     data-id="<?= $func->id ?>"
@@ -98,7 +98,7 @@
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                            
+
                             <?php else : ?>
                                 <tr>
                                     <td colspan="2" class="text-center text-muted py-4">Nenhum funcionário cadastrado.</td>
@@ -181,7 +181,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body py-4 px-4">
-                    <form method="post">
+                    <form action="<?= base_url('funcionarios/editar') ?>" method="post">
                         <input type="hidden" name="id_edit" id="id_edit">
 
                         <div class="mb-3 text-start">
@@ -216,7 +216,7 @@
                 </div>
                 <div class="modal-footer border-top-0 justify-content-center gap-3">
                     <button type="button" class="btn btn-secondary btn-lg px-5 rounded-pill shadow-sm" data-bs-dismiss="modal">Não</button>
-                    <form method="post">
+                    <form action="<?= base_url('funcionarios/desligar') ?>" method="post">
                         <input type="hidden" name="id_desligamento" id="id_desligamento">
                         <button type="submit" class="btn btn-danger btn-lg px-5 rounded-pill shadow-sm" name="desligar-funcionario">Sim</button>
                     </form>
@@ -243,7 +243,7 @@
                 </div>
                 <div class="modal-footer border-top-0 justify-content-center gap-3">
                     <button type="button" class="btn btn-secondary btn-lg px-5 rounded-pill shadow-sm" data-bs-dismiss="modal">Não</button>
-                    <form method="post">
+                    <form action="<?= base_url('funcionarios/ativar') ?>" method="post">
                         <input type="hidden" name="id_ativar" id="id_ativar">
                         <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow-sm" name="ativar-funcionario">Sim</button>
                     </form>
@@ -421,8 +421,8 @@
 </script>
 
 <script>
-    <?php 
-    $toast = $this->session->flashdata('toast'); 
+    <?php
+    $toast = $this->session->flashdata('toast');
 
     $mensagem = isset($toast['mensagem']) ? $toast['mensagem'] : '';
     $tipo = isset($toast['tipo']) ? $toast['tipo'] : '';
@@ -434,7 +434,7 @@
     if (mensagem) {
         var corFundo = (tipo === "sucesso") ?
             "linear-gradient(to right, #00b09b, #96c93d)" :
-            "linear-gradient(to right, #ff5f6d, #ffc371)"; 
+            "linear-gradient(to right, #ff5f6d, #ffc371)";
 
         Toastify({
             text: mensagem,
