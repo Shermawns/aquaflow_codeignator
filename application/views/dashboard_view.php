@@ -289,6 +289,9 @@
 
         new Chart(document.getElementById('topProductsChart'), topProductsConfig);
     </script>
+    <?php 
+        $this->load->view('chat_widget_view'); 
+    ?>
 </body>
 
 </html>
