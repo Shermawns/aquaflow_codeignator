@@ -3,24 +3,25 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Ai extends CI_Controller
 {
-
-    private $api_key = 'AIzaSyDUspxhTZGgn5wzALtanrKzwh-4005bkBY';
+  
+    private $api_key;
 
     public function __construct()
     {
         parent::__construct();
         $this->load->library('session');
+        
+        $this->load->config('api_keys');
+
+        $this->api_key = $this->config->item('gemini_key'); 
 
         if (file_exists(APPPATH . 'models/Dashboard_model.php')) {
             $this->load->model('Dashboard_model');
         }
     }
 
-
-
     public function ask()
     {
-
         $user_message = $this->input->post('message');
 
         if (empty($user_message)) {
@@ -64,13 +65,8 @@ class Ai extends CI_Controller
         echo json_encode(['response' => $response_text]);
     }
 
-
-
-
-
     private function get_context_data()
     {
-
         if (!isset($this->Vendas_model)) $this->load->model('Vendas_model');
         if (!isset($this->Produtos_model)) $this->load->model('Produtos_model');
         if (!isset($this->Funcionarios_model)) $this->load->model('Funcionarios_model');
@@ -87,6 +83,8 @@ class Ai extends CI_Controller
         }
 
         $todos_produtos = $this->Produtos_model->get_all();
+        $todos_produtos = $todos_produtos ?? []; 
+        
         $context['produtos_lista'] = array_map(function ($p) {
             return [
                 'produto' => $p->nome_produto,
@@ -96,6 +94,8 @@ class Ai extends CI_Controller
         }, array_slice($todos_produtos, 0, 30));
 
         $todas_vendas = $this->Vendas_model->get_all();
+        $todas_vendas = $todas_vendas ?? [];
+
         $context['ultimas_vendas'] = array_map(function ($v) {
             return [
                 'data' => $v->data_venda,
@@ -106,16 +106,14 @@ class Ai extends CI_Controller
         }, array_slice($todas_vendas, 0, 10));
 
         $funcionarios = $this->Funcionarios_model->get_all();
+        $funcionarios = $funcionarios ?? [];
+
         $context['equipe'] = array_map(function ($f) {
             return $f->nome;
         }, $funcionarios);
 
         return $context;
     }
-
-
-
-
 
     private function call_gemini($prompt)
     {
@@ -150,7 +148,8 @@ class Ai extends CI_Controller
         if (isset($json['candidates'][0]['content']['parts'][0]['text'])) {
             return $json['candidates'][0]['content']['parts'][0]['text'];
         } else {
-            return "Foi utilizado todos os tokens";
+            log_message('error', 'Gemini Error: ' . $response);
+            return "Não foi possível processar a resposta. Verifique os logs.";
         }
     }
 }
