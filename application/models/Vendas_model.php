@@ -10,7 +10,7 @@ class Vendas_model extends CI_Model
             tabela_funcionarios.nome AS funcionario_vendas,
             SUM(tabela_vendas_produtos.qtd_vendido) as total_itens,
             SUM(tabela_vendas_produtos.qtd_vendido * tabela_produtos.vlr_unitario) as valor_total_venda,
-            GROUP_CONCAT(CONCAT('<small class=\"fw-bold text-primary\">', tabela_vendas_produtos.qtd_vendido, 'x</small> ', tabela_produtos.nome_produto) SEPARATOR '<br>') AS lista_produtos
+            GROUP_CONCAT(CONCAT('<small class=\"fw-bold text-primary\">', tabela_vendas_produtos.qtd_vendido, 'x</small> ', tabela_produtos.nome_produto, ' <small class=\"text-muted\">| R$ ', REPLACE(FORMAT(tabela_produtos.vlr_unitario, 2),'.',','), '</small>') SEPARATOR '<br>') AS lista_produtos
         ");
         $this->db->from('tabela_vendas');
         $this->db->join('tabela_funcionarios', 'tabela_vendas.funcionario_vendas = tabela_funcionarios.id');

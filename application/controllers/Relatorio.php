@@ -55,4 +55,18 @@ class Relatorio extends CI_Controller
         $this->pdf->render();
         $this->pdf->stream("relatorio_geral_dashboard.pdf", array("Attachment" => 1));
     }
+
+    public function gerar_vendas_pdf()
+    {
+        $this->load->model('Vendas_model');
+
+        $data['lista_vendas'] = $this->Vendas_model->get_all();
+
+        $html = $this->load->view('modeloPdfVendas_view', $data, TRUE);
+
+        $this->pdf->loadHtml($html);
+        $this->pdf->setPaper('A4', 'portrait');
+        $this->pdf->render();
+        $this->pdf->stream("relatorio_vendas.pdf", array("Attachment" => 1));
+    }
 }
