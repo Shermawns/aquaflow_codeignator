@@ -53,25 +53,25 @@
                 <h2 class="fw-bold text-primary mb-1">Dashboard</h2>
                 <p class="text-muted">Visão geral do mês</p>
             </div>
-                <div class="d-flex justify-content-end gap-2">
-                    <a href="<?= site_url('relatorio/dashboard_pdf') ?>">
-                        <button type="button" class="btn btn-danger btn-sm">
-                            <i class="fa-solid fa-file-pdf me-2"></i>PDF
-                        </button>
-                    </a>
-                    <a href="<?= site_url('relatorio/dashboard_csv') ?>">
-                        <button type="button" class="btn btn-success btn-sm">
-                            <i class="fa-solid fa-file-csv me-2"></i>CSV
-                        </button>
-                    </a>
-                    <a href="<?= site_url('relatorio/dashboard_xlsx') ?>">
-                        <button type="button" class="btn btn-success btn-sm">
-                            <i class="fa-solid fa-file-excel me-2"></i>XLSX
-                        </button>
-                    </a>
-                </div>
+            <div class="d-flex justify-content-end gap-2">
+                <a href="<?= site_url('relatorio/gerar_geral_pdf') ?>">
+                    <button type="button" class="btn btn-danger btn-sm">
+                        <i class="fa-solid fa-file-pdf me-2"></i>PDF
+                    </button>
+                </a>
+                <a href="<?= site_url('relatorio/dashboard_csv') ?>">
+                    <button type="button" class="btn btn-success btn-sm">
+                        <i class="fa-solid fa-file-csv me-2"></i>CSV
+                    </button>
+                </a>
+                <a href="<?= site_url('relatorio/dashboard_xlsx') ?>">
+                    <button type="button" class="btn btn-success btn-sm">
+                        <i class="fa-solid fa-file-excel me-2"></i>XLSX
+                    </button>
+                </a>
+            </div>
         </div>
-        
+
 
         <div class="row g-4 mb-5 fade-in">
             <div class="col-md-4">
@@ -307,8 +307,8 @@
 
         new Chart(document.getElementById('topProductsChart'), topProductsConfig);
     </script>
-    <?php 
-        $this->load->view('chat_widget_view'); 
+    <?php
+    $this->load->view('chat_widget_view');
     ?>
 </body>
 
