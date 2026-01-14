@@ -14,14 +14,35 @@
 <body>
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
-            <div>
-                <h2 class="fw-bold mb-1" style="color: #0d6efd;">Metas</h2>
-                <p class="text-muted mb-0">Gerenciamento de metas</p>
-            </div>
-            <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal"  data-bs-target="#modalCadastrar_meta" <?= empty($lista_funcionarios) ? 'disabled              style="cursor: not-allowed; pointer-events: auto;"' : '' ?>>
-                <i class="fa-solid fa-plus me-2"></i>Registrar Meta
-            </button>
-        </div>
+                    <div>
+                        <h2 class="fw-bold mb-1" style="color: #0d6efd;">Metas</h2>
+                        <p class="text-muted mb-0">Gerenciamento de metas</p>
+                    </div>
+
+                    <div class="d-flex flex-column gap-2">
+                        <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCadastrar_meta">
+                            <i class="fa-solid fa-plus me-2"></i>Registrar meta
+                        </button>
+
+                        <div>
+                            <a href="<?= site_url('relatorio/gerar_metas_pdf') ?>">
+                                <button type="button" class="btn btn-danger btn-sm">
+                                    <i class="fa-solid fa-file-pdf me-2"></i>PDF
+                                </button>
+                            </a>
+                            <a href="<?= site_url('relatorio/gerar_csv_metas') ?>">
+                                <button type="button" class="btn btn-success btn-sm">
+                                    <i class="fa-solid fa-file-csv me-2"></i>CSV
+                                </button>
+                            </a>
+                            <a href="<?= site_url('relatorio/gerar_xlsx_metas') ?>">
+                                <button type="button" class="btn btn-success btn-sm">
+                                    <i class="fa-solid fa-file-excel me-2"></i>XLSX
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
         <?php if (empty($lista_funcionarios)) : ?>
             <div class="alert alert-warning d-flex align-items-center mb-4 fade-in rounded-4 shadow-sm" role="alert">

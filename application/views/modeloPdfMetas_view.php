@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Relatório de Funcionários</title>
+    <title>Relatório de metas</title>
     <style>
         body { font-family: sans-serif; font-size: 12px; }
         .cabecalho { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
@@ -15,7 +15,7 @@
 <body>
 
     <div class="cabecalho">
-        <h1 class="titulo">Relatório de funcionários</h1>
+        <h1 class="titulo">Relatório de metas</h1>
         <p>Gerado em: <?php echo date('d/m/Y H:i'); ?></p>
     </div>
 
@@ -23,7 +23,6 @@
         <thead>
             <tr>
                 <th>Nome</th>
-                <th>Data de contratação</th>
                 <th>Meta</th>
                 <th>Realizado</th>
             </tr>
@@ -32,7 +31,6 @@
             <?php foreach($metas_vs_vendas as $meta): ?>
             <tr>
                 <td><?= $meta->nome ?></td>
-                <td><?= $meta->data_contratacao ?></td>
                 <td><?= 'R$ ' . number_format($meta->meta, 2, ',', '.') ?></td>
                 <td><?= 'R$ ' . number_format($meta->realizado, 2, ',', '.') ?></td>
             </tr>

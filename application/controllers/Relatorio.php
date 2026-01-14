@@ -38,6 +38,77 @@ class Relatorio extends CI_Controller
         $this->pdf->stream("funcionarios_relatorio.pdf", array("Attachment" => 1));
     }
 
+        public function gerar_metas_pdf(){
+        $this->load->model('Dashboard_model');
+
+        $dados['metas_vs_vendas'] = $this->Dashboard_model->get_metas_vs_vendas();
+
+        $html = $this->load->view('modeloPdfMetas_view', $dados, TRUE);
+
+        $this->pdf->loadHtml($html);
+        $this->pdf->setPaper('A4', 'portrait');
+        $this->pdf->render();
+        $this->pdf->stream("metas_relatorio.pdf", array("Attachment" => 1));
+    }
+
+       public function gerar_csv_metas(){
+        $this->load->model('Dashboard_model');
+        $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
+        
+        $filename = 'relatorio_metas' . '.csv';
+
+        header("Content-Description: File Transfer"); 
+        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Type: application/csv; charset=UTF-8");
+
+        $file = fopen('php://output', 'w');
+
+        fputs($file, "\xEF\xBB\xBF");
+
+        $header = array("Nome","Meta", "Realizado"); 
+        fputcsv($file, $header, ";");
+
+        foreach($funcionarios as $func){
+            $linha = array(
+                $func->nome,
+                'R$ ' . number_format($func->meta, 2, ',', '.') ,
+                'R$ ' . number_format($func->realizado, 2, ',', '.')
+            );
+
+            fputcsv($file, $linha, ";");
+        }
+            fclose($file); 
+    }
+
+        public function gerar_xlsx_metas(){
+        $this->load->model('Dashboard_model');
+        $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
+        
+        $filename = 'relatorio_metas' . '.xlsx';
+
+        header("Content-Description: File Transfer"); 
+        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Type: application/csv; charset=UTF-8");
+
+        $file = fopen('php://output', 'w');
+
+        fputs($file, "\xEF\xBB\xBF");
+
+        $header = array("Nome","Meta", "Realizado"); 
+        fputcsv($file, $header, ";");
+
+        foreach($funcionarios as $func){
+            $linha = array(
+                $func->nome,
+                'R$ ' . number_format($func->meta, 2, ',', '.') ,
+                'R$ ' . number_format($func->realizado, 2, ',', '.') ,
+            );
+
+            fputcsv($file, $linha, ";");
+        }
+            fclose($file); 
+    }
+
     public function gerar_geral_pdf()
     {
         $this->load->model('Dashboard_model');
