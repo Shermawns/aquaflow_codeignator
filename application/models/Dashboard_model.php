@@ -17,7 +17,8 @@ class Dashboard_model extends CI_Model
 
     public function get_produtos_mais_vendidos_mes()
     {
-        $this->db->select('tabela_produtos.nome_produto, SUM(tabela_vendas_produtos.qtd_vendido) as total_qtd', FALSE);
+        $this->db->select('SUM(tabela_vendas_produtos.qtd_vendido * tabela_produtos.vlr_unitario) as total', FALSE);
+        $this->db->select('tabela_produtos.nome_produto, tabela_produtos.vlr_unitario,  SUM(tabela_vendas_produtos.qtd_vendido) as total_qtd', FALSE);
         $this->db->from('tabela_vendas_produtos');
         $this->db->join('tabela_vendas', 'tabela_vendas.id = tabela_vendas_produtos.id_venda');
         $this->db->join('tabela_produtos', 'tabela_vendas_produtos.id_produto = tabela_produtos.id');
@@ -71,7 +72,7 @@ class Dashboard_model extends CI_Model
                              AND YEAR(tabela_vendas.data_venda) = " . date('Y') . " 
                              GROUP BY funcionario_vendas) as vendas";
 
-        $this->db->select('tabela_funcionarios.nome, IFNULL(tabela_metas.vlr_meta, 0) as meta, IFNULL(vendas.total_vendido, 0) as realizado', FALSE);
+        $this->db->select('tabela_funcionarios.nome,tabela_funcionarios.data_contratacao,IFNULL(tabela_metas.vlr_meta, 0) as meta, IFNULL(vendas.total_vendido, 0) as realizado', FALSE);
         $this->db->from('tabela_funcionarios');
         $this->db->join('tabela_metas', 'tabela_funcionarios.id = tabela_metas.funcionario_meta AND MONTH(tabela_metas.mes_meta) = ' . date('m') . ' AND YEAR(tabela_metas.mes_meta) = ' . date('Y'), 'left');
         $this->db->join($subquery_vendas, 'tabela_funcionarios.id = vendas.funcionario_vendas', 'left');

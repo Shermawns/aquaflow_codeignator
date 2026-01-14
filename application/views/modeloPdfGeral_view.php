@@ -112,7 +112,7 @@
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="4" class="text-center">Nenhum dado de meta encontrado.</td>
+                    <td colspan="3" class="text-center">Nenhum dado de meta encontrado.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
@@ -124,6 +124,8 @@
             <tr>
                 <th>Produto</th>
                 <th class="text-right">Quantidade Vendida</th>
+                <th class="text-right">Preço</th>
+                <th class="text-right">Valor total</th>
             </tr>
         </thead>
         <tbody>
@@ -132,6 +134,8 @@
                     <tr>
                         <td><?= $prod->nome_produto ?></td>
                         <td class="text-right"><?= $prod->total_qtd ?></td>
+                        <td class="text-right"><?='R$ ' . number_format($prod->vlr_unitario, 2, ',', '.')?></td>
+                        <td class="text-right"><?= 'R$ ' . number_format($prod->total, 2, ',', '.')?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>

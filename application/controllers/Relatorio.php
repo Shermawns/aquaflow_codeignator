@@ -26,9 +26,9 @@ class Relatorio extends CI_Controller
 
     public function gerar_func_pdf()
     {
-        $this->load->model('Funcionarios_model');
+        $this->load->model('Dashboard_model');
 
-        $dados['funcionario'] = $this->Funcionarios_model->get_all();
+        $dados['metas_vs_vendas'] = $this->Dashboard_model->get_metas_vs_vendas();
 
         $html = $this->load->view('modeloPdfFunc_view', $dados, TRUE);
 
@@ -90,7 +90,7 @@ class Relatorio extends CI_Controller
         foreach ($produtos as $pd) {
             $linha = array(
                 $pd->nome_produto,
-                number_format($pd->vlr_unitario, 2, ',', '.'), 
+                'R$ ' . number_format($pd->vlr_unitario, 2, ',', '.') ,
                 $pd->qtd_estoque
             );
             
@@ -120,7 +120,7 @@ class Relatorio extends CI_Controller
     foreach ($produtos as $pd) {
         $linha = array(
             $pd->nome_produto,
-            number_format($pd->vlr_unitario, 2, ',', '.'), 
+            'R$ ' . number_format($pd->vlr_unitario, 2, ',', '.'),
             $pd->qtd_estoque
         );
         
@@ -132,8 +132,8 @@ class Relatorio extends CI_Controller
 
 
     public function gerar_csv_func(){
-        $this->load->model('Funcionarios_model');
-        $funcionarios = $this->Funcionarios_model->get_all();
+        $this->load->model('Dashboard_model');
+        $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
         
         $filename = 'relatorio_funcionarios' . '.csv';
 
@@ -145,13 +145,15 @@ class Relatorio extends CI_Controller
 
         fputs($file, "\xEF\xBB\xBF");
 
-        $header = array("Nome", "Data de contratacao"); 
+        $header = array("Nome", "Data de contratacao", "Meta", "Realizado"); 
         fputcsv($file, $header, ";");
 
         foreach($funcionarios as $func){
             $linha = array(
                 $func->nome,
-                date('d/m/Y', strtotime($func->data_contratacao))
+                date('d/m/Y', strtotime($func->data_contratacao)),
+                'R$ ' . number_format($func->meta, 2, ',', '.') ,
+                'R$ ' . number_format($func->realizado, 2, ',', '.')
             );
 
             fputcsv($file, $linha, ";");
@@ -159,9 +161,9 @@ class Relatorio extends CI_Controller
             fclose($file); 
     }
 
-    public function gerar_xlsx_func(){
-        $this->load->model('Funcionarios_model');
-        $funcionarios = $this->Funcionarios_model->get_all();
+        public function gerar_xlsx_func(){
+        $this->load->model('Dashboard_model');
+        $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
         
         $filename = 'relatorio_funcionarios' . '.xlsx';
 
@@ -173,15 +175,17 @@ class Relatorio extends CI_Controller
 
         fputs($file, "\xEF\xBB\xBF");
 
-        $header = array("Nome", "Data de contratacao"); 
+        $header = array("Nome", "Data de contratacao", "Meta", "Realizado"); 
         fputcsv($file, $header, ";");
 
         foreach($funcionarios as $func){
             $linha = array(
                 $func->nome,
-                date('d/m/Y', strtotime($func->data_contratacao))
+                date('d/m/Y', strtotime($func->data_contratacao)),
+                'R$ ' . number_format($func->meta, 2, ',', '.') ,
+                'R$ ' . number_format($func->realizado, 2, ',', '.') ,
             );
-                
+
             fputcsv($file, $linha, ";");
         }
             fclose($file); 
@@ -210,7 +214,7 @@ class Relatorio extends CI_Controller
                 date('d/m/Y', strtotime($vd->data_venda)),
                 $vd->nome_funcionario,
                 $vd->nome_produto, 
-                $vd->vlr_unitario,     
+               'R$ ' . number_format($vd->vlr_unitario, 2, ',', '.') ,     
                 $vd->qtd_vendido
             );
             
@@ -243,7 +247,7 @@ class Relatorio extends CI_Controller
                 date('d/m/Y', strtotime($vd->data_venda)),
                 $vd->nome_funcionario,
                 $vd->nome_produto, 
-                $vd->vlr_unitario,     
+                'R$ ' . number_format($vd->vlr_unitario, 2, ',', '.'),     
                 $vd->qtd_vendido
             );
             
@@ -310,13 +314,15 @@ class Relatorio extends CI_Controller
             fputcsv($file, array("")); 
 
             fputcsv($file, array("PRODUTOS MAIS VENDIDOS"), ";");
-            fputcsv($file, array("Produto", "Quantidade Vendida"), ";");
+            fputcsv($file, array("Produto", "Quantidade Vendida", "Preço", "Valor total"), ";");
 
             if(!empty($data['produtos_mais_vendidos'])){
                 foreach ($data['produtos_mais_vendidos'] as $prod) {
                     $linha = array(
                         $prod->nome_produto,
-                        $prod->total_qtd
+                        $prod->total_qtd,
+                        'R$ ' . number_format($prod->vlr_unitario, 2, ',', '.'),
+                        'R$ ' . number_format($prod->total, 2, ',', '.')
                     );
                     fputcsv($file, $linha, ";");
                 }
@@ -398,13 +404,15 @@ class Relatorio extends CI_Controller
         fputcsv($file, array("")); 
 
         fputcsv($file, array("PRODUTOS MAIS VENDIDOS"), ";");
-        fputcsv($file, array("Produto", "Quantidade Vendida"), ";");
+        fputcsv($file, array("Produto", "Quantidade Vendida", "Preço", "Valor total"), ";");
 
         if(!empty($data['produtos_mais_vendidos'])){
             foreach ($data['produtos_mais_vendidos'] as $prod) {
                 $linha = array(
                     $prod->nome_produto,
-                    $prod->total_qtd
+                    $prod->total_qtd,
+                    $prod->vlr_unitario,
+                    'R$ ' . number_format($prod->total, 2, ',', '.')
                 );
                 fputcsv($file, $linha, ";");
             }

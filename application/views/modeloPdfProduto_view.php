@@ -31,7 +31,7 @@
             <?php foreach($produtos as $prod): ?>
             <tr>
                 <td><?= $prod->nome_produto ?></td>
-                <td><?= $prod->vlr_unitario ?></td>
+                <td><?= 'R$ ' . number_format($prod->vlr_unitario, 2, ',', '.') ?></td>
                 <td><?= $prod->qtd_estoque ?></td>
 
             </tr>

@@ -24,14 +24,17 @@
             <tr>
                 <th>Nome</th>
                 <th>Data de contratação</th>
+                <th>Meta</th>
+                <th>Realizado</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach($funcionario as $func): ?>
+            <?php foreach($metas_vs_vendas as $meta): ?>
             <tr>
-
-                <td><?= $func->nome ?></td>
-                <td><?= $func->data_contratacao ?></td>
+                <td><?= $meta->nome ?></td>
+                <td><?= $meta->data_contratacao ?></td>
+                <td><?= 'R$ ' . number_format($meta->meta, 2, ',', '.') ?></td>
+                <td><?= 'R$ ' . number_format($meta->realizado, 2, ',', '.') ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
