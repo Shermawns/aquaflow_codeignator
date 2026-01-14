@@ -51,4 +51,24 @@ class Vendas_model extends CI_Model
     {
         return $this->db->insert('tabela_vendas_produtos', $dados);
     }
+
+    public function get_vendas_detalhadas()
+    {
+        $this->db->select("
+            tabela_funcionarios.nome AS nome_funcionario,
+            tabela_produtos.nome_produto,
+            tabela_vendas_produtos.qtd_vendido,
+            tabela_produtos.vlr_unitario,
+            tabela_vendas.data_venda
+        ");
+        $this->db->from('tabela_vendas');
+        $this->db->join('tabela_funcionarios', 'tabela_vendas.funcionario_vendas = tabela_funcionarios.id');
+        $this->db->join('tabela_vendas_produtos', 'tabela_vendas.id = tabela_vendas_produtos.id_venda');
+        $this->db->join('tabela_produtos', 'tabela_vendas_produtos.id_produto = tabela_produtos.id');
+        
+        $this->db->order_by('tabela_vendas.data_venda', 'DESC');
+
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

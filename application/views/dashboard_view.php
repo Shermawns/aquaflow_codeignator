@@ -59,12 +59,12 @@
                         <i class="fa-solid fa-file-pdf me-2"></i>PDF
                     </button>
                 </a>
-                <a href="<?= site_url('relatorio/dashboard_csv') ?>">
+                <a href="<?= site_url('relatorio/gerar_csv_geral') ?>">
                     <button type="button" class="btn btn-success btn-sm">
                         <i class="fa-solid fa-file-csv me-2"></i>CSV
                     </button>
                 </a>
-                <a href="<?= site_url('relatorio/dashboard_xlsx') ?>">
+                <a href="<?= site_url('relatorio/gerar_xlsx_geral') ?>">
                     <button type="button" class="btn btn-success btn-sm">
                         <i class="fa-solid fa-file-excel me-2"></i>XLSX
                     </button>
