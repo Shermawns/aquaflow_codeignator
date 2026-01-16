@@ -4,8 +4,9 @@
     <title>Gerenciar Funcionários - AquaFlow</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -44,7 +45,7 @@
         <div class="card border-0 rounded-4 overflow-hidden">
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
+                    <table class="table table-hover mb-0 align-middle" id="tabelaFuncionarios">
                         <thead class="bg-light border-bottom">
                             <tr>
                                 <th class="ps-4 py-3 text-secondary border-0">Funcionário</th>
@@ -314,9 +315,177 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#tabelaFuncionarios').DataTable({
+                    "lengthChange": false,
+                    "info": false,
+                    "dom": 'frtp',
+                    
+                    "language": {
+                        "sEmptyTable": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        }
+                    }
+                });
+            });
+        </script>
 </body>
+
+</html>
+
+<script>
+    // Função para preencher o modal de edição
+    function carregarDadosEdicao(botao) {
+        var id = botao.getAttribute('data-id');
+        var funcionario = botao.getAttribute('data-nome');
+
+        document.getElementById('id_edit').value = id;
+        document.getElementById('funcionario_edit').value = funcionario;
+    }
+
+    // Função para preencher o modal de visualização
+    function carregarDadosVisualizacao(botao) {
+        var nome = botao.getAttribute('data-nome');
+        var cpf = botao.getAttribute('data-cpf');
+        var contratacao = botao.getAttribute('data-contratacao');
+
+        var id = botao.getAttribute('data-id');
+
+        document.getElementById('visualizar_nome').value = nome;
+        document.getElementById('visualizar_cpf').value = cpf;
+        document.getElementById('visualizar_contratacao').value = contratacao ? contratacao : "";
+
+        const tbodyMetas = document.querySelector('#tabela_metas_func tbody');
+        const tbodyVendas = document.querySelector('#tabela_vendas_func tbody');
+
+        const formData = new FormData();
+        formData.append('id', id);
+
+        fetch('<?= base_url("funcionarios/get_details") ?>', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                tbodyMetas.innerHTML = '';
+                tbodyVendas.innerHTML = '';
+
+                let containerTotal = document.getElementById('total_vendas_container');
+                if (!containerTotal) {
+                    const h6 = document.createElement('h6');
+                    h6.id = 'total_vendas_container';
+                    h6.className = 'fw-bold text-success mt-3';
+                    document.querySelector('#tabela_vendas_func').parentNode.after(h6);
+                    containerTotal = h6;
+                }
+                containerTotal.innerHTML = `Total das vendas: R$ ${parseFloat(data.total_geral).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+
+                // Preencher Metas
+                if (data.metas.length > 0) {
+                    data.metas.forEach(meta => {
+                        let row = `<tr>
+                        <td>${new Date(meta.mes_meta).toLocaleDateString('pt-BR', {timeZone: 'UTC', month:'2-digit', year:'numeric'})}</td>
+                        <td class="text-success fw-bold">R$ ${parseFloat(meta.vlr_meta).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    </tr>`;
+                        tbodyMetas.innerHTML += row;
+                    });
+                } else {
+                    tbodyMetas.innerHTML = '<tr><td colspan="2" class="text-center text-muted">Nenhuma meta recente.</td></tr>';
+                }
+
+
+                // Preencher Vendas
+                if (data.vendas.length > 0) {
+                    data.vendas.forEach(venda => {
+                        let row = `<tr>
+                        <td>${new Date(venda.data_venda).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</td>
+                        <td>${venda.nome_produto}</td>
+                         <td>${venda.qtd_vendido}</td>
+                         <td>R$ ${parseFloat(venda.valor_venda).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    </tr>`;
+                        tbodyVendas.innerHTML += row;
+                    });
+                } else {
+                    tbodyVendas.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Nenhuma venda recente.</td></tr>';
+                }
+            })
+
+    }
+
+    // Função para confirmar desligamento do funcionario
+    function confirmarDesligamento(botao) {
+        var id = botao.getAttribute('data-id');
+        var nome = botao.getAttribute('data-nome');
+
+        document.getElementById('conf').value = nome;
+        document.getElementById('id_desligamento').value = id;
+    }
+
+    // Função para confirmar ativacao do funcionario
+    function confirmarAtivacao(botao) {
+        var id = botao.getAttribute('data-id');
+        var nome = botao.getAttribute('data-nome');
+
+        document.getElementById('confativ').value = nome;
+        document.getElementById('id_ativar').value = id;
+    }
+
+    // Funcao para formatar para modelo de cpf
+    function mascara(i) {
+        var v = i.value;
+
+        if (isNaN(v[v.length - 1])) {
+            i.value = v.substring(0, v.length - 1);
+            return;
+        }
+
+        i.setAttribute("maxlength", "14");
+        i.setAttribute("maxlength", "14");
+        if (v.length == 3 || v.length == 7) i.value += ".";
+        if (v.length == 11) i.value += "-";
+    }
+</script>
+
+<script>
+    <?php
+    $toast = $this->session->flashdata('toast');
+
+    $mensagem = isset($toast['mensagem']) ? $toast['mensagem'] : '';
+    $tipo = isset($toast['tipo']) ? $toast['tipo'] : '';
+    ?>
+
+    var mensagem = "<?php echo $mensagem; ?>";
+    var tipo = "<?php echo $tipo; ?>";
+
+    if (mensagem) {
+        var corFundo = (tipo === "sucesso") ?
+            "linear-gradient(to right, #00b09b, #96c93d)" :
+            "linear-gradient(to right, #ff5f6d, #ffc371)";
+
+        Toastify({
+            text: mensagem,
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: corFundo,
+            }
+        }).showToast();
+    }
+</script>
 
 </html>
 

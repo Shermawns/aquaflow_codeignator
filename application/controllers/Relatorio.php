@@ -9,6 +9,13 @@ class Relatorio extends CI_Controller
         $this->load->library('pdf');
     }
 
+    private function clean_html_data($text)
+    {
+        $text = str_replace('<br>', ' ; ', $text);
+        $text = strip_tags($text);
+        return trim($text);
+    }
+
 
     public function gerar_produto_pdf()
     {
@@ -38,7 +45,8 @@ class Relatorio extends CI_Controller
         $this->pdf->stream("funcionarios_relatorio.pdf", array("Attachment" => 1));
     }
 
-        public function gerar_metas_pdf(){
+    public function gerar_metas_pdf()
+    {
         $this->load->model('Dashboard_model');
 
         $dados['metas_vs_vendas'] = $this->Dashboard_model->get_metas_vs_vendas();
@@ -51,62 +59,66 @@ class Relatorio extends CI_Controller
         $this->pdf->stream("metas_relatorio.pdf", array("Attachment" => 1));
     }
 
-       public function gerar_csv_metas(){
+    public function gerar_csv_metas()
+    {
         $this->load->model('Dashboard_model');
         $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
-        
+
         $filename = 'relatorio_metas' . '.csv';
 
-        header("Content-Description: File Transfer"); 
-        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/csv; charset=UTF-8");
 
         $file = fopen('php://output', 'w');
 
         fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
 
-        $header = array("Nome","Meta", "Realizado"); 
+        $header = array("Nome", "Meta", "Realizado");
         fputcsv($file, $header, ";");
 
-        foreach($funcionarios as $func){
+        foreach ($funcionarios as $func) {
             $linha = array(
                 $func->nome,
-                'R$ ' . number_format($func->meta, 2, ',', '.') ,
+                'R$ ' . number_format($func->meta, 2, ',', '.'),
                 'R$ ' . number_format($func->realizado, 2, ',', '.')
             );
 
             fputcsv($file, $linha, ";");
         }
-            fclose($file); 
+        fclose($file);
     }
 
-        public function gerar_xlsx_metas(){
+    public function gerar_xlsx_metas()
+    {
         $this->load->model('Dashboard_model');
         $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
-        
+
         $filename = 'relatorio_metas' . '.xlsx';
 
-        header("Content-Description: File Transfer"); 
-        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/csv; charset=UTF-8");
 
         $file = fopen('php://output', 'w');
 
         fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
 
-        $header = array("Nome","Meta", "Realizado"); 
+        $header = array("Nome", "Meta", "Realizado");
         fputcsv($file, $header, ";");
 
-        foreach($funcionarios as $func){
+        foreach ($funcionarios as $func) {
             $linha = array(
                 $func->nome,
-                'R$ ' . number_format($func->meta, 2, ',', '.') ,
-                'R$ ' . number_format($func->realizado, 2, ',', '.') ,
+                'R$ ' . number_format($func->meta, 2, ',', '.'),
+                'R$ ' . number_format($func->realizado, 2, ',', '.'),
             );
 
             fputcsv($file, $linha, ";");
         }
-            fclose($file); 
+        fclose($file);
     }
 
     public function gerar_geral_pdf()
@@ -141,284 +153,205 @@ class Relatorio extends CI_Controller
         $this->pdf->stream("relatorio_vendas.pdf", array("Attachment" => 1));
     }
 
-    public function gerar_csv_produtos(){
+    public function gerar_csv_produtos()
+    {
         $this->load->model('Produtos_model');
         $produtos = $this->Produtos_model->get_all();
 
         $filename = 'relatorio_produtos' . '.csv';
 
-        header("Content-Description: File Transfer"); 
-        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/csv; charset=UTF-8");
 
         $file = fopen('php://output', 'w');
 
         fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
 
-        $header = array("Nome do Produto", "Preço Unitário", "Qtd Estoque"); 
+        $header = array("Nome do Produto", "Preço Unitário", "Qtd Estoque");
         fputcsv($file, $header, ";");
 
         foreach ($produtos as $pd) {
             $linha = array(
                 $pd->nome_produto,
-                'R$ ' . number_format($pd->vlr_unitario, 2, ',', '.') ,
+                'R$ ' . number_format($pd->vlr_unitario, 2, ',', '.'),
                 $pd->qtd_estoque
             );
-            
+
             fputcsv($file, $linha, ";");
         }
-        fclose($file); 
-        exit; 
+        fclose($file);
+        exit;
     }
 
-    public function gerar_xlsx_produtos(){
-    $this->load->model('Produtos_model');
-    $produtos = $this->Produtos_model->get_all();
+    public function gerar_xlsx_produtos()
+    {
+        $this->load->model('Produtos_model');
+        $produtos = $this->Produtos_model->get_all();
 
-    $filename = 'relatorio_produtos' . '.xlsx';
+        $filename = 'relatorio_produtos' . '.xlsx';
 
-    header("Content-Description: File Transfer"); 
-    header("Content-Disposition: attachment; filename=$filename"); 
-    header("Content-Type: application/csv; charset=UTF-8");
-
-    $file = fopen('php://output', 'w');
-
-    fputs($file, "\xEF\xBB\xBF");
-
-    $header = array("Nome do Produto", "Preço Unitário", "Qtd Estoque"); 
-    fputcsv($file, $header, ";");
-
-    foreach ($produtos as $pd) {
-        $linha = array(
-            $pd->nome_produto,
-            'R$ ' . number_format($pd->vlr_unitario, 2, ',', '.'),
-            $pd->qtd_estoque
-        );
-        
-        fputcsv($file, $linha, ";");
-    }
-    fclose($file); 
-    exit; 
-}
-
-
-    public function gerar_csv_func(){
-        $this->load->model('Dashboard_model');
-        $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
-        
-        $filename = 'relatorio_funcionarios' . '.csv';
-
-        header("Content-Description: File Transfer"); 
-        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/csv; charset=UTF-8");
 
         $file = fopen('php://output', 'w');
 
         fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
 
-        $header = array("Nome", "Data de contratacao", "Meta", "Realizado"); 
+        $header = array("Nome do Produto", "Preço Unitário", "Qtd Estoque");
         fputcsv($file, $header, ";");
 
-        foreach($funcionarios as $func){
+        foreach ($produtos as $pd) {
+            $linha = array(
+                $pd->nome_produto,
+                'R$ ' . number_format($pd->vlr_unitario, 2, ',', '.'),
+                $pd->qtd_estoque
+            );
+
+            fputcsv($file, $linha, ";");
+        }
+        fclose($file);
+        exit;
+    }
+
+
+    public function gerar_csv_func()
+    {
+        $this->load->model('Dashboard_model');
+        $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
+
+        $filename = 'relatorio_funcionarios' . '.csv';
+
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/csv; charset=UTF-8");
+
+        $file = fopen('php://output', 'w');
+
+        fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
+
+        $header = array("Nome", "Data de contratacao", "Meta", "Realizado");
+        fputcsv($file, $header, ";");
+
+        foreach ($funcionarios as $func) {
             $linha = array(
                 $func->nome,
                 date('d/m/Y', strtotime($func->data_contratacao)),
-                'R$ ' . number_format($func->meta, 2, ',', '.') ,
+                'R$ ' . number_format($func->meta, 2, ',', '.'),
                 'R$ ' . number_format($func->realizado, 2, ',', '.')
             );
 
             fputcsv($file, $linha, ";");
         }
-            fclose($file); 
+        fclose($file);
     }
 
-        public function gerar_xlsx_func(){
+    public function gerar_xlsx_func()
+    {
         $this->load->model('Dashboard_model');
         $funcionarios = $this->Dashboard_model->get_metas_vs_vendas();
-        
+
         $filename = 'relatorio_funcionarios' . '.xlsx';
 
-        header("Content-Description: File Transfer"); 
-        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/csv; charset=UTF-8");
 
         $file = fopen('php://output', 'w');
 
         fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
 
-        $header = array("Nome", "Data de contratacao", "Meta", "Realizado"); 
+        $header = array("Nome", "Data de contratacao", "Meta", "Realizado");
         fputcsv($file, $header, ";");
 
-        foreach($funcionarios as $func){
+        foreach ($funcionarios as $func) {
             $linha = array(
                 $func->nome,
                 date('d/m/Y', strtotime($func->data_contratacao)),
-                'R$ ' . number_format($func->meta, 2, ',', '.') ,
-                'R$ ' . number_format($func->realizado, 2, ',', '.') ,
+                'R$ ' . number_format($func->meta, 2, ',', '.'),
+                'R$ ' . number_format($func->realizado, 2, ',', '.'),
             );
 
             fputcsv($file, $linha, ";");
         }
-            fclose($file); 
+        fclose($file);
     }
 
-    public function gerar_csv_vendas() {
+    public function gerar_csv_vendas()
+    {
         $this->load->model('Vendas_model');
-        $vendas = $this->Vendas_model->get_vendas_detalhadas();
+        $vendas = $this->Vendas_model->get_all();
 
         $filename = 'relatorio_vendas' . '.csv';
 
-        header("Content-Description: File Transfer"); 
-        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/csv; charset=UTF-8");
 
         $file = fopen('php://output', 'w');
 
         fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
 
-        $header = array("Data", "Funcionário", "Produto","Preço" ,"Qtd"); 
+        $header = array("Funcionário", "Data", "Produtos", "Valor Total");
         fputcsv($file, $header, ";");
 
         foreach ($vendas as $vd) {
-            
+
             $linha = array(
+                $vd->funcionario_vendas,
                 date('d/m/Y', strtotime($vd->data_venda)),
-                $vd->nome_funcionario,
-                $vd->nome_produto, 
-               'R$ ' . number_format($vd->vlr_unitario, 2, ',', '.') ,     
-                $vd->qtd_vendido
+                $this->clean_html_data($vd->lista_produtos),
+                'R$ ' . number_format($vd->valor_total_venda, 2, ',', '.')
             );
-            
+
             fputcsv($file, $linha, ";");
         }
-        fclose($file); 
-        exit; 
+        fclose($file);
+        exit;
     }
 
-        public function gerar_xlsx_vendas() {
+    public function gerar_xlsx_vendas()
+    {
         $this->load->model('Vendas_model');
-        $vendas = $this->Vendas_model->get_vendas_detalhadas();
+        $vendas = $this->Vendas_model->get_all();
 
-        $filename = 'relatorio_vendas' . '.csv';
+        $filename = 'relatorio_vendas' . '.xlsx';
 
-        header("Content-Description: File Transfer"); 
-        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/csv; charset=UTF-8");
 
         $file = fopen('php://output', 'w');
 
         fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
 
-        $header = array("Data", "Funcionário", "Produto","Preço" ,"Qtd"); 
+        $header = array("Funcionário", "Data", "Produtos", "Valor Total");
         fputcsv($file, $header, ";");
 
         foreach ($vendas as $vd) {
-            
+
             $linha = array(
+                $vd->funcionario_vendas,
                 date('d/m/Y', strtotime($vd->data_venda)),
-                $vd->nome_funcionario,
-                $vd->nome_produto, 
-                'R$ ' . number_format($vd->vlr_unitario, 2, ',', '.'),     
-                $vd->qtd_vendido
+                $this->clean_html_data($vd->lista_produtos),
+                'R$ ' . number_format($vd->valor_total_venda, 2, ',', '.')
             );
-            
+
             fputcsv($file, $linha, ";");
         }
-        fclose($file); 
-        exit; 
+        fclose($file);
+        exit;
     }
 
-    public function gerar_csv_geral(){
-            $this->load->model('Dashboard_model');
-
-            $data['total_vendas_mes'] = $this->Dashboard_model->get_total_vendas_mes();
-            $data['produtos_mais_vendidos'] = $this->Dashboard_model->get_produtos_mais_vendidos_mes();
-            $data['top_funcionarios'] = $this->Dashboard_model->get_top_funcionarios_mes();
-            $data['recent_sales'] = $this->Dashboard_model->get_recent_sales();
-            $data['metas_vs_vendas'] = $this->Dashboard_model->get_metas_vs_vendas();
-
-            $filename = 'relatorio_geral_dashboard'. '.csv';
-
-            header("Content-Description: File Transfer"); 
-            header("Content-Disposition: attachment; filename=$filename"); 
-            header("Content-Type: application/csv; charset=UTF-8");
-
-            $file = fopen('php://output', 'w');
-
-            fputs($file, "\xEF\xBB\xBF");
-
-    
-            fputcsv($file, array("RESUMO DO MÊS (KPIs)"), ";");
-            fputcsv($file, array("Vendas do Mês", "Produto Top", "Funcionário Destaque"), ";");
-
-
-            $nome_top_produto = !empty($data['produtos_mais_vendidos']) ? $data['produtos_mais_vendidos'][0]->nome_produto : 'N/A';
-            $nome_top_func = !empty($data['top_funcionarios']) ? $data['top_funcionarios'][0]->nome : 'N/A';
-
-            $linha_kpi = array(
-                'R$ ' . number_format($data['total_vendas_mes'], 2, ',', '.'),
-                $nome_top_produto,
-                $nome_top_func
-            );
-            fputcsv($file, $linha_kpi, ";");
-
-            fputcsv($file, array(""));
-
-            fputcsv($file, array("METAS DOS FUNCIONÁRIOS"), ";");
-            fputcsv($file, array("Funcionário", "Meta", "Realizado", "Status"), ";");
-
-            if(!empty($data['metas_vs_vendas'])){
-                foreach ($data['metas_vs_vendas'] as $meta) {
-                    $status = ($meta->realizado >= $meta->meta) ? "Atingida" : "Pendente";
-                    $linha = array(
-                        $meta->nome,
-                        number_format($meta->meta, 2, ',', '.'),
-                        number_format($meta->realizado, 2, ',', '.'),
-                        $status
-                    );
-                    fputcsv($file, $linha, ";");
-                }
-            } else {
-                fputcsv($file, array("Nenhuma meta encontrada"), ";");
-            }
-
-            fputcsv($file, array("")); 
-
-            fputcsv($file, array("PRODUTOS MAIS VENDIDOS"), ";");
-            fputcsv($file, array("Produto", "Quantidade Vendida", "Preço", "Valor total"), ";");
-
-            if(!empty($data['produtos_mais_vendidos'])){
-                foreach ($data['produtos_mais_vendidos'] as $prod) {
-                    $linha = array(
-                        $prod->nome_produto,
-                        $prod->total_qtd,
-                        'R$ ' . number_format($prod->vlr_unitario, 2, ',', '.'),
-                        'R$ ' . number_format($prod->total, 2, ',', '.')
-                    );
-                    fputcsv($file, $linha, ";");
-                }
-            }
-
-            fputcsv($file, array("")); 
-
-            fputcsv($file, array("VENDAS RECENTES"), ";");
-            fputcsv($file, array("Data", "Funcionário", "Valor Total"), ";");
-
-            if(!empty($data['recent_sales'])){
-                foreach ($data['recent_sales'] as $sale) {
-                    $linha = array(
-                        date('d/m/Y', strtotime($sale->data_venda)),
-                        $sale->nome,
-                        'R$ ' . number_format($sale->total, 2, ',', '.')
-                    );
-                    fputcsv($file, $linha, ";");
-                }
-            }
-
-            fclose($file); 
-            exit; 
-        }
-        public function gerar_xlsx_geral(){
+    public function gerar_csv_geral()
+    {
         $this->load->model('Dashboard_model');
 
         $data['total_vendas_mes'] = $this->Dashboard_model->get_total_vendas_mes();
@@ -427,17 +360,18 @@ class Relatorio extends CI_Controller
         $data['recent_sales'] = $this->Dashboard_model->get_recent_sales();
         $data['metas_vs_vendas'] = $this->Dashboard_model->get_metas_vs_vendas();
 
-        $filename = 'relatorio_geral_dashboard'. '.xlsx';
+        $filename = 'relatorio_geral_dashboard' . '.csv';
 
-        header("Content-Description: File Transfer"); 
-        header("Content-Disposition: attachment; filename=$filename"); 
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/csv; charset=UTF-8");
 
         $file = fopen('php://output', 'w');
 
         fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
 
- 
+
         fputcsv($file, array("RESUMO DO MÊS (KPIs)"), ";");
         fputcsv($file, array("Vendas do Mês", "Produto Top", "Funcionário Destaque"), ";");
 
@@ -457,7 +391,7 @@ class Relatorio extends CI_Controller
         fputcsv($file, array("METAS DOS FUNCIONÁRIOS"), ";");
         fputcsv($file, array("Funcionário", "Meta", "Realizado", "Status"), ";");
 
-        if(!empty($data['metas_vs_vendas'])){
+        if (!empty($data['metas_vs_vendas'])) {
             foreach ($data['metas_vs_vendas'] as $meta) {
                 $status = ($meta->realizado >= $meta->meta) ? "Atingida" : "Pendente";
                 $linha = array(
@@ -472,12 +406,104 @@ class Relatorio extends CI_Controller
             fputcsv($file, array("Nenhuma meta encontrada"), ";");
         }
 
-        fputcsv($file, array("")); 
+        fputcsv($file, array(""));
 
         fputcsv($file, array("PRODUTOS MAIS VENDIDOS"), ";");
         fputcsv($file, array("Produto", "Quantidade Vendida", "Preço", "Valor total"), ";");
 
-        if(!empty($data['produtos_mais_vendidos'])){
+        if (!empty($data['produtos_mais_vendidos'])) {
+            foreach ($data['produtos_mais_vendidos'] as $prod) {
+                $linha = array(
+                    $prod->nome_produto,
+                    $prod->total_qtd,
+                    'R$ ' . number_format($prod->vlr_unitario, 2, ',', '.'),
+                    'R$ ' . number_format($prod->total, 2, ',', '.')
+                );
+                fputcsv($file, $linha, ";");
+            }
+        }
+
+        fputcsv($file, array(""));
+
+        fputcsv($file, array("VENDAS RECENTES"), ";");
+        fputcsv($file, array("Data", "Funcionário", "Valor Total"), ";");
+
+        if (!empty($data['recent_sales'])) {
+            foreach ($data['recent_sales'] as $sale) {
+                $linha = array(
+                    date('d/m/Y', strtotime($sale->data_venda)),
+                    $sale->nome,
+                    'R$ ' . number_format($sale->total, 2, ',', '.')
+                );
+                fputcsv($file, $linha, ";");
+            }
+        }
+
+        fclose($file);
+        exit;
+    }
+    public function gerar_xlsx_geral()
+    {
+        $this->load->model('Dashboard_model');
+
+        $data['total_vendas_mes'] = $this->Dashboard_model->get_total_vendas_mes();
+        $data['produtos_mais_vendidos'] = $this->Dashboard_model->get_produtos_mais_vendidos_mes();
+        $data['top_funcionarios'] = $this->Dashboard_model->get_top_funcionarios_mes();
+        $data['recent_sales'] = $this->Dashboard_model->get_recent_sales();
+        $data['metas_vs_vendas'] = $this->Dashboard_model->get_metas_vs_vendas();
+
+        $filename = 'relatorio_geral_dashboard' . '.xlsx';
+
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/csv; charset=UTF-8");
+
+        $file = fopen('php://output', 'w');
+
+        fputs($file, "\xEF\xBB\xBF");
+        fwrite($file, "sep=;\n");
+
+
+        fputcsv($file, array("RESUMO DO MÊS (KPIs)"), ";");
+        fputcsv($file, array("Vendas do Mês", "Produto Top", "Funcionário Destaque"), ";");
+
+
+        $nome_top_produto = !empty($data['produtos_mais_vendidos']) ? $data['produtos_mais_vendidos'][0]->nome_produto : 'N/A';
+        $nome_top_func = !empty($data['top_funcionarios']) ? $data['top_funcionarios'][0]->nome : 'N/A';
+
+        $linha_kpi = array(
+            'R$ ' . number_format($data['total_vendas_mes'], 2, ',', '.'),
+            $nome_top_produto,
+            $nome_top_func
+        );
+        fputcsv($file, $linha_kpi, ";");
+
+        fputcsv($file, array(""));
+
+        fputcsv($file, array("METAS DOS FUNCIONÁRIOS"), ";");
+        fputcsv($file, array("Funcionário", "Meta", "Realizado", "Status"), ";");
+
+        if (!empty($data['metas_vs_vendas'])) {
+            foreach ($data['metas_vs_vendas'] as $meta) {
+                $status = ($meta->realizado >= $meta->meta) ? "Atingida" : "Pendente";
+                $linha = array(
+                    $meta->nome,
+                    number_format($meta->meta, 2, ',', '.'),
+                    number_format($meta->realizado, 2, ',', '.'),
+                    $status
+                );
+                fputcsv($file, $linha, ";");
+            }
+        } else {
+            fputcsv($file, array("Nenhuma meta encontrada"), ";");
+        }
+
+        fputcsv($file, array(""));
+
+        fputcsv($file, array("PRODUTOS MAIS VENDIDOS"), ";");
+        fputcsv($file, array("Produto", "Quantidade Vendida", "Preço", "Valor total"), ";");
+
+        if (!empty($data['produtos_mais_vendidos'])) {
             foreach ($data['produtos_mais_vendidos'] as $prod) {
                 $linha = array(
                     $prod->nome_produto,
@@ -489,12 +515,12 @@ class Relatorio extends CI_Controller
             }
         }
 
-        fputcsv($file, array("")); 
+        fputcsv($file, array(""));
 
         fputcsv($file, array("VENDAS RECENTES"), ";");
         fputcsv($file, array("Data", "Funcionário", "Valor Total"), ";");
 
-        if(!empty($data['recent_sales'])){
+        if (!empty($data['recent_sales'])) {
             foreach ($data['recent_sales'] as $sale) {
                 $linha = array(
                     date('d/m/Y', strtotime($sale->data_venda)),
@@ -505,7 +531,7 @@ class Relatorio extends CI_Controller
             }
         }
 
-        fclose($file); 
-        exit; 
+        fclose($file);
+        exit;
     }
 }

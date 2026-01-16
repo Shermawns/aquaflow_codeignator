@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -21,9 +22,9 @@
             </div>
 
             <div class="d-flex flex-column gap-2">
-            <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCadastrar_venda" <?= empty($lista_funcionarios) ? 'disabled              style="cursor: not-allowed; pointer-events: auto;"' : '' ?>>
-                <i class="fa-solid fa-plus me-2"></i>Registrar Venda
-            </button>
+                <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCadastrar_venda" <?= empty($lista_funcionarios) ? 'disabled              style="cursor: not-allowed; pointer-events: auto;"' : '' ?>>
+                    <i class="fa-solid fa-plus me-2"></i>Registrar Venda
+                </button>
 
                 <div>
                     <a href="<?= site_url('relatorio/gerar_vendas_pdf') ?>">
@@ -57,7 +58,7 @@
         <div class="card border-0 rounded-4 overflow-hidden">
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
+                    <table class="table table-hover mb-0 align-middle" id="tabelaVendas">
                         <thead class="bg-light border-bottom">
                             <tr>
                                 <th class="ps-4 py-3 text-secondary border-0" style="width: 35%;">Funcionário</th>
@@ -149,6 +150,7 @@
                             <h6 class="text-start fw-bold text-primary">Adicionar Itens</h6>
 
                             <div class="row align-items-end mb-3">
+
                                 <div class="col-md-6 text-start">
                                     <label for="prod_venda" class="form-label text-muted small fw-bold">PRODUTO <span class="text-danger">*</span></label>
                                     <select class="form-select bg-light" id="prod_venda">
@@ -160,6 +162,7 @@
                                         <?php endif; ?>
                                     </select>
                                 </div>
+                                
                                 <div class="col-md-3 text-start">
                                     <label for="qtd_venda" class="form-label text-muted small fw-bold">QTD <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control bg-light" id="qtd_venda" min="1" placeholder="0" style="position: relative; z-index: 10;">
@@ -198,9 +201,30 @@
 
 
 
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
+        <script>
+            $(document).ready(function() {
+                $('#tabelaVendas').DataTable({
+                    "lengthChange": false,
+                    "info": false,
+                    "dom": 'frtp',
+                    
+                    "language": {
+                        "sEmptyTable": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        }
+                    }
+                });
+            });
+        </script>
 </body>
 
 </html>

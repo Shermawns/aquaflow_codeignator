@@ -8,11 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>"> 
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
 </head>
 
 <body>
-        <div class="container py-5">
+    <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
             <div>
                 <h2 class="fw-bold mb-1" style="color: #0d6efd;">Usuários</h2>
@@ -24,61 +25,61 @@
         </div>
 
         <!-- Caixa onde fica os usuários listados-->
-         <div class="card border-0 rounded-4 overflow-hidden">
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0 align-middle">
-                <thead class="bg-light border-bottom">
-                    <tr>
-                        <th class="ps-4 py-3 text-secondary border-0">Usuário</th>
-                        <th class="pe-4 py-3 text-secondary text-end border-0">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($lista_usuarios)): ?>
-                        
-                        <?php foreach ($lista_usuarios as $user): ?>
+        <div class="card border-0 rounded-4 overflow-hidden">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle"  id="tabelaUsuarios">
+                        <thead class="bg-light border-bottom">
                             <tr>
-                                <td class="ps-4">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-circle bg-primary bg-opacity-10 text-primary me-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                            <i class="fa-regular fa-user"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0 fw-semibold"><?= htmlspecialchars($user->usuario) ?></h6>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td class="pe-4 text-end">
-                                    <button type="button" 
-                                        class="btn btn-sm btn-outline-primary rounded-pill me-1" 
-                                        title="Editar" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#modalEditar_func"
-                                        data-id="<?= $user->id ?>"
-                                        data-usuario="<?= htmlspecialchars($user->usuario) ?>"
-                                        onclick="carregarDadosEdicao(this)">
-                                        Editar
-                                    </button>
-                                    
-                                    <a href="<?= base_url('usuarios/excluir/' . $user->id) ?>" 
-                                       class="btn btn-sm btn-outline-danger rounded-pill">
-                                       Excluir
-                                    </a>
-                                </td>
+                                <th class="ps-4 py-3 text-secondary border-0">Usuário</th>
+                                <th class="pe-4 py-3 text-secondary text-end border-0">Ações</th>
                             </tr>
-                        <?php endforeach; ?>
-                        <?php else: ?>
-                        <tr>
-                            <td colspan="2" class="text-center text-muted py-4">Nenhum usuário cadastrado.</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($lista_usuarios)): ?>
+
+                                <?php foreach ($lista_usuarios as $user): ?>
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle bg-primary bg-opacity-10 text-primary me-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="fa-regular fa-user"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 fw-semibold"><?= htmlspecialchars($user->usuario) ?></h6>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="pe-4 text-end">
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-primary rounded-pill me-1"
+                                                title="Editar"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEditar_func"
+                                                data-id="<?= $user->id ?>"
+                                                data-usuario="<?= htmlspecialchars($user->usuario) ?>"
+                                                onclick="carregarDadosEdicao(this)">
+                                                Editar
+                                            </button>
+
+                                            <a href="<?= base_url('usuarios/excluir/' . $user->id) ?>"
+                                                class="btn btn-sm btn-outline-danger rounded-pill">
+                                                Excluir
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted py-4">Nenhum usuário cadastrado.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
         <!-- Modal de editar usuário -->
         <div class="modal fade" id="modalEditar_func" tabindex="-1" aria-hidden="true">
@@ -164,8 +165,10 @@
             </div>
         </div>
     </div>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
 </body>
 
 <script>
@@ -180,8 +183,8 @@
 </script>
 
 <script>
-    <?php 
-    $toast = $this->session->flashdata('toast'); 
+    <?php
+    $toast = $this->session->flashdata('toast');
 
     $mensagem = isset($toast['mensagem']) ? $toast['mensagem'] : '';
     $tipo = isset($toast['tipo']) ? $toast['tipo'] : '';
@@ -193,7 +196,7 @@
     if (mensagem) {
         var corFundo = (tipo === "sucesso") ?
             "linear-gradient(to right, #00b09b, #96c93d)" :
-            "linear-gradient(to right, #ff5f6d, #ffc371)"; 
+            "linear-gradient(to right, #ff5f6d, #ffc371)";
 
         Toastify({
             text: mensagem,
@@ -208,3 +211,23 @@
         }).showToast();
     }
 </script>
+        <script>
+            $(document).ready(function() {
+                $('#tabelaUsuarios').DataTable({
+                    "lengthChange": false,
+                    "info": false,
+                    "dom": 'frtp',
+                    
+                    "language": {
+                        "sEmptyTable": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        }
+                    }
+                });
+            });
+        </script>

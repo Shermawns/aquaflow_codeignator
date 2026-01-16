@@ -54,8 +54,8 @@
 
     if (mensagem) {
         var corFundo = tipo === "sucesso" ?
-            "linear-gradient(to right, #11998e, #38ef7d)" : // Verde (Sucesso)
-            "linear-gradient(to right, #ff416c, #ff4b2b)"; // Vermelho (Erro)
+            "linear-gradient(to right, #11998e, #38ef7d)" :
+            "linear-gradient(to right, #ff416c, #ff4b2b)"; 
 
         Toastify({
             text: mensagem,

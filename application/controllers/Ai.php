@@ -65,6 +65,14 @@ class Ai extends CI_Controller
         echo json_encode(['response' => $response_text]);
     }
 
+
+
+
+
+
+
+    
+
     private function get_context_data()
     {
         if (!isset($this->Vendas_model)) $this->load->model('Vendas_model');
@@ -114,6 +122,12 @@ class Ai extends CI_Controller
 
         return $context;
     }
+
+
+
+
+
+
 
     private function call_gemini($prompt)
     {

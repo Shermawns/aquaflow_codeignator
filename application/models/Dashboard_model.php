@@ -57,7 +57,7 @@ class Dashboard_model extends CI_Model
         $this->db->group_by('tabela_vendas.id');
         $this->db->order_by('tabela_vendas.data_venda', 'DESC');
         $this->db->order_by('total', 'DESC');
-        $this->db->limit(5);
+        $this->db->limit(20);
         $query = $this->db->get();
         return $query->result();
     }

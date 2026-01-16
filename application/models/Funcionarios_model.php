@@ -37,7 +37,7 @@ class Funcionarios_model extends CI_Model
         $this->db->join('tabela_produtos', 'tabela_vendas_produtos.id_produto = tabela_produtos.id');
         $this->db->where('tabela_vendas.funcionario_vendas', $id);
         $this->db->order_by('tabela_vendas.data_venda', 'DESC');
-        $this->db->limit(10); // Limit to recent sales
+        $this->db->limit(10);
         $query = $this->db->get();
         return $query->result();
     }

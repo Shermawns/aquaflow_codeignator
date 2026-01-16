@@ -9,40 +9,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
 </head>
 
 <body>
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
-                    <div>
-                        <h2 class="fw-bold mb-1" style="color: #0d6efd;">Metas</h2>
-                        <p class="text-muted mb-0">Gerenciamento de metas</p>
-                    </div>
+            <div>
+                <h2 class="fw-bold mb-1" style="color: #0d6efd;">Metas</h2>
+                <p class="text-muted mb-0">Gerenciamento de metas</p>
+            </div>
 
-                    <div class="d-flex flex-column gap-2">
-                        <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCadastrar_meta">
-                            <i class="fa-solid fa-plus me-2"></i>Registrar meta
+            <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCadastrar_meta">
+                    <i class="fa-solid fa-plus me-2"></i>Registrar meta
+                </button>
+
+                <div>
+                    <a href="<?= site_url('relatorio/gerar_metas_pdf') ?>">
+                        <button type="button" class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-file-pdf me-2"></i>PDF
                         </button>
-
-                        <div>
-                            <a href="<?= site_url('relatorio/gerar_metas_pdf') ?>">
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    <i class="fa-solid fa-file-pdf me-2"></i>PDF
-                                </button>
-                            </a>
-                            <a href="<?= site_url('relatorio/gerar_csv_metas') ?>">
-                                <button type="button" class="btn btn-success btn-sm">
-                                    <i class="fa-solid fa-file-csv me-2"></i>CSV
-                                </button>
-                            </a>
-                            <a href="<?= site_url('relatorio/gerar_xlsx_metas') ?>">
-                                <button type="button" class="btn btn-success btn-sm">
-                                    <i class="fa-solid fa-file-excel me-2"></i>XLSX
-                                </button>
-                            </a>
-                        </div>
-                    </div>
+                    </a>
+                    <a href="<?= site_url('relatorio/gerar_csv_metas') ?>">
+                        <button type="button" class="btn btn-success btn-sm">
+                            <i class="fa-solid fa-file-csv me-2"></i>CSV
+                        </button>
+                    </a>
+                    <a href="<?= site_url('relatorio/gerar_xlsx_metas') ?>">
+                        <button type="button" class="btn btn-success btn-sm">
+                            <i class="fa-solid fa-file-excel me-2"></i>XLSX
+                        </button>
+                    </a>
                 </div>
+            </div>
+        </div>
 
         <?php if (empty($lista_funcionarios)) : ?>
             <div class="alert alert-warning d-flex align-items-center mb-4 fade-in rounded-4 shadow-sm" role="alert">
@@ -56,7 +57,7 @@
         <div class="card border-0 rounded-4 overflow-hidden">
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
+                    <table class="table table-hover mb-0 align-middle" id="tabelaMetas">
                         <thead class="bg-light border-bottom">
                             <tr>
                                 <th class="ps-4 py-3 text-secondary border-0" style="width: 28%;">Funcionário</th>
@@ -195,6 +196,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
 
 </body>
 
@@ -239,3 +242,24 @@
         }).showToast();
     }
 </script>
+
+        <script>
+            $(document).ready(function() {
+                $('#tabelaMetas').DataTable({
+                    "lengthChange": false,
+                    "info": false,
+                    "dom": 'frtp',
+                    
+                    "language": {
+                        "sEmptyTable": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        }
+                    }
+                });
+            });
+        </script>
